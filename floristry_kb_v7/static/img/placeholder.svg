@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="280" viewBox="0 0 400 280">
+  <rect width="400" height="280" fill="#eef5f0"/>
+  <circle cx="200" cy="115" r="46" fill="#226a4d" opacity="0.18"/>
+  <path d="M200 75 C215 95, 215 125, 200 145 C185 125, 185 95, 200 75 Z" fill="#226a4d" opacity="0.65"/>
+  <text x="200" y="195" font-family="Inter, Arial, sans-serif" font-size="16" fill="#226a4d" text-anchor="middle" font-weight="bold">ФЛОРИСТИКА</text>
+  <text x="200" y="218" font-family="Inter, Arial, sans-serif" font-size="12" fill="#5b6e63" text-anchor="middle">Изображение в static/img/</text>
+</svg>

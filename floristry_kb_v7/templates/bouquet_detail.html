@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}{{ bouquet.name }} — ФЛОРИСТИКА{% endblock %}
+
+{% block content %}
+<div style="margin-bottom:1rem;">
+  <a href="{{ url_for('bouquets_list') }}" class="btn btn-outline">← Назад к букетам</a>
+</div>
+
+<div class="detail-card">
+  <div class="detail-grid">
+    <img src="/{{ bouquet.image_url or 'static/img/placeholder.svg' }}"
+         onerror="this.src='{{ url_for('static', filename='img/placeholder.svg') }}'"
+         alt="{{ bouquet.name }}"
+         class="detail-img">
+
+    <div>
+      <h1 style="margin:0 0 0.4rem; font-size:1.75rem;">{{ bouquet.name }}</h1>
+      {% if bouquet.style %}
+        <div class="badges" style="margin-bottom:0.9rem;">
+          <span class="badge">Стиль: {{ bouquet.style }}</span>
+        </div>
+      {% endif %}
+
+      {% if bouquet.description %}
+        <p style="margin:0 0 0.9rem; font-size:0.98rem;">{{ bouquet.description }}</p>
+      {% endif %}
+
+      {% if occasions %}
+        <div class="detail-section">
+          <h3 style="margin:0 0 0.5rem;">Поводы</h3>
+          <div class="badges" style="margin:0;">
+            {% for o in occasions %}
+              <span class="badge">{{ o }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if composition %}
+        <div class="detail-section">
+          <h3 style="margin:0 0 0.5rem;">Состав букета</h3>
+          <ul style="margin:0; padding-left:1.25rem;">
+            {% for c in composition %}
+              <li style="margin-bottom:0.45rem;">
+                <a href="{{ url_for('plant_detail', plant_id=c.plant_id) }}" style="color:#226a4d; font-weight:600;">{{ c.name_ru }}</a>
+                — {{ c.quantity }} шт. <em>({{ c.role }}, цвет: {{ c.color }}, сезон: {{ c.season }})</em>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      {% if shops %}
+        <div class="detail-section">
+          <h3 style="margin:0 0 0.5rem;">Где заказать в Гродно</h3>
+          <ul style="margin:0; padding-left:1.25rem;">
+            {% for s in shops %}
+              <li style="margin-bottom:0.35rem;">
+                <strong>{{ s.name }}</strong> (г. {{ s.city }}) —
+                <a href="{{ s.instagram_url }}" target="_blank" rel="noopener noreferrer" style="color:#226a4d; font-weight:600;">Instagram</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

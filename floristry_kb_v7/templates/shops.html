@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Магазины — ФЛОРИСТИКА{% endblock %}
+
+{% block content %}
+<h1 class="page-heading">Магазины</h1>
+
+<div class="grid-cards">
+  {% for item in shops %}
+  {% set s = item.info %}
+  <div class="card">
+    <a class="media-card-link" href="{{ s.instagram_url }}" target="_blank" rel="noopener noreferrer">
+      <div class="ig-cover-wrap">
+        <div class="ig-icon-circle">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+        </div>
+        <div class="ig-handle-text">{{ instagram_handle(s.instagram_url) }}</div>
+        <div class="ig-sub-text">Нажмите, чтобы перейти в Instagram</div>
+      </div>
+      <div class="card-body">
+        <h2 class="card-title">{{ s.name }}</h2>
+        <div class="badges">
+          <span class="badge">г. {{ s.city }}</span>
+          <span class="badge">Instagram</span>
+        </div>
+        <p style="margin:0; font-size:0.92rem;">{{ s.description }}</p>
+      </div>
+    </a>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

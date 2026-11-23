@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}ФЛОРИСТИКА{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <nav class="side-links">
+        <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Главная</a>
+        <a href="{{ url_for('plants_list') }}" class="{% if request.endpoint in ('plants_list', 'plant_detail') %}active{% endif %}">Растения</a>
+        <a href="{{ url_for('bouquets_list') }}" class="{% if request.endpoint in ('bouquets_list', 'bouquet_detail') %}active{% endif %}">Букеты</a>
+        <a href="{{ url_for('styles_list') }}" class="{% if request.endpoint in ('styles_list', 'style_detail') %}active{% endif %}">Стили флористики</a>
+        <a href="{{ url_for('materials_list') }}" class="{% if request.endpoint == 'materials_list' %}active{% endif %}">Материалы</a>
+        <a href="{{ url_for('shops_list') }}" class="{% if request.endpoint == 'shops_list' %}active{% endif %}">Магазины</a>
+      </nav>
+      <div class="sidebar-footer">
+        Пильтицкая П.В.<br>Проектирование БЗ, 2026
+      </div>
+    </aside>
+
+    <div class="content-area">
+      {% block fullpage_content %}
+      <main class="container">
+        {% block content %}{% endblock %}
+      </main>
+      {% endblock %}
+    </div>
+  </div>
+</body>
+</html>

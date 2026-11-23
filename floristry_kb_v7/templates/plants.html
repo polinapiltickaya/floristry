@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Растения — ФЛОРИСТИКА{% endblock %}
+
+{% block content %}
+<h1 class="page-heading">Растения</h1>
+
+<div class="grid-cards">
+  {% for p in plants %}
+  <div class="card">
+    <a class="card-link" href="{{ url_for('plant_detail', plant_id=p.plant_id) }}">
+      <img src="/{{ p.image_url or 'static/img/placeholder.svg' }}"
+           onerror="this.src='{{ url_for('static', filename='img/placeholder.svg') }}'"
+           alt="{{ p.name_ru }}">
+      <div class="card-body">
+        <h2 class="card-title">{{ p.name_ru }}</h2>
+        <div class="badges">
+          <span class="badge">{{ p.category }}</span>
+          <span class="badge">{{ p.color }}</span>
+          <span class="badge">{{ p.season }}</span>
+        </div>
+        <p style="margin:0; font-size:0.92rem;">{{ p.description }}</p>
+      </div>
+    </a>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}{{ plant.name_ru }} — ФЛОРИСТИКА{% endblock %}
+
+{% block content %}
+<div style="margin-bottom:1rem;">
+  <a href="{{ url_for('plants_list') }}" class="btn btn-outline">← Назад к растениям</a>
+</div>
+
+<div class="detail-card">
+  <div class="detail-grid">
+    <img src="/{{ plant.image_url or 'static/img/placeholder.svg' }}"
+         onerror="this.src='{{ url_for('static', filename='img/placeholder.svg') }}'"
+         alt="{{ plant.name_ru }}"
+         class="detail-img">
+
+    <div>
+      <h1 style="margin:0 0 0.25rem; font-size:1.75rem;">{{ plant.name_ru }}</h1>
+      {% if plant.name_latin %}
+        <div class="subtitle" style="font-size:1rem;">{{ plant.name_latin }}</div>
+      {% endif %}
+
+      <div class="badges" style="margin-bottom:1rem;">
+        {% if plant.category %}<span class="badge">{{ plant.category }}</span>{% endif %}
+        {% if plant.color %}<span class="badge">{{ plant.color }}</span>{% endif %}
+        {% if plant.season %}<span class="badge">{{ plant.season }}</span>{% endif %}
+      </div>
+
+      {% if plant.description %}
+        <p style="margin:0 0 0.9rem; font-size:0.98rem;">{{ plant.description }}</p>
+      {% endif %}
+
+      {% if plant.care_info %}
+        <div class="detail-section">
+          <h3 style="margin:0 0 0.4rem;">Уход</h3>
+          <p style="margin:0;">{{ plant.care_info }}</p>
+        </div>
+      {% endif %}
+
+      {% if occasions %}
+        <div class="detail-section">
+          <h3 style="margin:0 0 0.5rem;">Подходящие поводы</h3>
+          <div class="badges" style="margin:0;">
+            {% for o in occasions %}
+              <span class="badge">{{ o }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if bouquets %}
+        <div class="detail-section">
+          <h3 style="margin:0 0 0.5rem;">Входит в состав букетов</h3>
+          <ul style="margin:0; padding-left:1.25rem;">
+            {% for b in bouquets %}
+              <li style="margin-bottom:0.35rem;">
+                <a href="{{ url_for('bouquet_detail', bouquet_id=b.bouquet_id) }}" style="color:#226a4d; font-weight:600;">{{ b.name }}</a>
+                — {{ b.quantity }} шт. ({{ b.role }}, стиль: {{ b.style }})
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

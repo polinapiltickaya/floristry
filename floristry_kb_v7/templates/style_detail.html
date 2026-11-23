@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}{{ style.name }} — ФЛОРИСТИКА{% endblock %}
+
+{% block content %}
+<div style="margin-bottom:1rem;">
+  <a href="{{ url_for('styles_list') }}" class="btn btn-outline">← Назад к стилям флористики</a>
+</div>
+
+<div class="detail-card">
+  <div class="detail-grid">
+    <img src="/{{ style.image_url or 'static/img/placeholder.svg' }}"
+         onerror="this.src='{{ url_for('static', filename='img/placeholder.svg') }}'"
+         alt="{{ style.name }}"
+         class="detail-img">
+
+    <div>
+      <h1 style="margin:0 0 0.25rem; font-size:1.75rem;">{{ style.name }}</h1>
+      {% if style.subtitle %}
+        <div class="subtitle" style="font-size:1rem;">{{ style.subtitle }}</div>
+      {% endif %}
+
+      <p style="margin:0 0 0.9rem; font-size:0.98rem;">{{ style.description }}</p>
+
+      {% if features %}
+        <div class="detail-section">
+          <h3 style="margin:0 0 0.5rem;">Отличительные черты</h3>
+          <ul style="margin:0; padding-left:1.25rem;">
+            {% for feat in features %}
+              <li style="margin-bottom:0.35rem;">{{ feat }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      {% if style.usage_info %}
+        <div class="detail-section">
+          <h3 style="margin:0 0 0.4rem;">Применение и оформление</h3>
+          <p style="margin:0;">{{ style.usage_info }}</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

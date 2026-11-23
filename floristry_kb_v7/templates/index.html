@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% block title %}ФЛОРИСТИКА{% endblock %}
+
+{% block fullpage_content %}
+<div class="home-fullbg">
+  <div class="home-center-box">
+    <div class="hero-title-row">
+      <img src="{{ url_for('static', filename='img/flower_icon.png') }}"
+           onerror="this.src='{{ url_for('static', filename='img/placeholder.svg') }}'"
+           alt="ФЛОРИСТИКА"
+           class="hero-flower-icon">
+      <h1 class="hero-title-text">ФЛОРИСТИКА</h1>
+    </div>
+
+    <form class="search-pill-form" method="get" action="{{ url_for('index') }}">
+      <input type="text" name="q" value="{{ q }}" placeholder="Поиск по всей базе знаний..." autofocus>
+      <button type="submit">Найти</button>
+    </form>
+    <div class="search-hint">
+      Поиск по растениям, букетам, составу, стилям, поводам, материалам и магазинам
+    </div>
+  </div>
+
+  {% if search_results is not none %}
+  <div class="search-results-overlay">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:1rem;">
+      <h2 style="margin:0;">Результаты по запросу «{{ q }}» (найдено: {{ total_matches }})</h2>
+      <a href="{{ url_for('index') }}" class="btn btn-outline">Очистить</a>
+    </div>
+
+    {% if total_matches == 0 %}
+      <p style="margin:0; color:#5c6b63;">Совпадений не найдено.</p>
+    {% endif %}
+
+    {% if search_results.plants %}
+      <h3>Растения ({{ search_results.plants | length }})</h3>
+      <div class="grid-cards" style="margin-bottom:1.2rem;">
+        {% for p in search_results.plants %}
+        <div class="card">
+          <a class="card-link" href="{{ url_for('plant_detail', plant_id=p.plant_id) }}">
+            <img src="/{{ p.image_url or 'static/img/placeholder.svg' }}"
+                 onerror="this.src='{{ url_for('static', filename='img/placeholder.svg') }}'"
+                 alt="{{ p.name_ru }}">
+            <div class="card-body">
+              <h4 class="card-title">{{ p.name_ru }}</h4>
+              <div class="subtitle">{{ p.name_latin or '' }}</div>
+              <div class="badges">
+                <span class="badge">{{ p.category }}</span>
+                <span class="badge">{{ p.color }}</span>
+                <span class="badge">{{ p.season }}</span>
+              </div>
+              <p style="margin:0; font-size:0.9rem;">{{ p.description }}</p>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if search_results.bouquets %}
+      <h3>Букеты ({{ search_results.bouquets | length }})</h3>
+      <div class="grid-cards" style="margin-bottom:1.2rem;">
+        {% for b in search_results.bouquets %}
+        <div class="card">
+          <a class="card-link" href="{{ url_for('bouquet_detail', bouquet_id=b.bouquet_id) }}">
+            <img src="/{{ b.image_url or 'static/img/placeholder.svg' }}"
+                 onerror="this.src='{{ url_for('static', filename='img/placeholder.svg') }}'"
+                 alt="{{ b.name }}">
+            <div class="card-body">
+              <h4 class="card-title">{{ b.name }}</h4>
+              <div class="badges"><span class="badge">Стиль: {{ b.style }}</span></div>
+              <p style="margin:0; font-size:0.9rem;">{{ b.description }}</p>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if search_results.styles %}
+      <h3>Стили флористики ({{ search_results.styles | length }})</h3>
+      <div class="grid-cards" style="margin-bottom:1.2rem;">
+        {% for st in search_results.styles %}
+        <div class="card">
+          <a class="card-link" href="{{ url_for('style_detail', style_id=st.style_id) }}">
+            <img src="/{{ st.image_url or 'static/img/placeholder.svg' }}"
+                 onerror="this.src='{{ url_for('static', filename='img/placeholder.svg') }}'"
+                 alt="{{ st.name }}">
+            <div class="card-body">
+              <h4 class="card-title">{{ st.name }}</h4>
+              {% if st.subtitle %}<div class="subtitle">{{ st.subtitle }}</div>{% endif %}
+              <p style="margin:0; font-size:0.9rem;">{{ st.description }}</p>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if search_results.occasions %}
+      <h3>Поводы ({{ search_results.occasions | length }})</h3>
+      <div class="badges" style="margin-bottom:1.2rem;">
+        {% for o in search_results.occasions %}
+          <span class="badge">{{ o.name }}</span>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if search_results.shops %}
+      <h3>Магазины ({{ search_results.shops | length }})</h3>
+      <div class="grid-cards" style="margin-bottom:1.2rem;">
+        {% for s in search_results.shops %}
+        <div class="card">
+          <a class="media-card-link" href="{{ s.instagram_url }}" target="_blank" rel="noopener noreferrer">
+            <div class="ig-cover-wrap" style="height:135px;">
+              <div class="ig-handle-text">{{ instagram_handle(s.instagram_url) }}</div>
+              <div class="ig-sub-text">Перейти в Instagram</div>
+            </div>
+            <div class="card-body">
+              <h4 class="card-title">{{ s.name }}</h4>
+              <p style="margin:0; font-size:0.9rem;">{{ s.description }}</p>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if search_results.resources %}
+      <h3>Материалы ({{ search_results.resources | length }})</h3>
+      <div class="grid-cards">
+        {% for r in search_results.resources %}
+        {% set thumb = youtube_thumb(r.url) %}
+        <div class="card">
+          <a class="media-card-link" href="{{ r.url }}" target="_blank" rel="noopener noreferrer">
+            {% if thumb %}
+              <div class="yt-thumb-wrap">
+                <img src="{{ thumb }}" alt="{{ r.title }}">
+                <div class="yt-play-badge"></div>
+              </div>
+            {% endif %}
+            <div class="card-body">
+              <div class="badges">
+                <span class="badge">{{ r.type }}</span>
+                <span class="badge">{{ r.topic }}</span>
+              </div>
+              <h4 class="card-title" style="font-size:0.96rem;">{{ r.title }}</h4>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

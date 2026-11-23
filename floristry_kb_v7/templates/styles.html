@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Стили флористики — ФЛОРИСТИКА{% endblock %}
+
+{% block content %}
+<h1 class="page-heading">Стили флористики</h1>
+
+<div class="grid-cards">
+  {% for st in styles %}
+  <div class="card">
+    <a class="card-link" href="{{ url_for('style_detail', style_id=st.style_id) }}">
+      <img src="/{{ st.image_url or 'static/img/placeholder.svg' }}"
+           onerror="this.src='{{ url_for('static', filename='img/placeholder.svg') }}'"
+           alt="{{ st.name }}">
+      <div class="card-body">
+        <h2 class="card-title">{{ st.name }}</h2>
+        {% if st.subtitle %}
+          <div class="subtitle">{{ st.subtitle }}</div>
+        {% endif %}
+        <p style="margin:0; font-size:0.92rem;">{{ st.description }}</p>
+      </div>
+    </a>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
